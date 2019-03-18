@@ -11,7 +11,28 @@
 # production
 /build
 
+# build
+/dist
+
+# docs
+/docs
+
+# report
+/report
+
+# config
+.env
+
+# storage files
+/storage
+
+# documentation
+/apidoc
+
 # misc
+.idea
+/.vscode
+.editorconfig
 .DS_Store
 .env.local
 .env.development.local
@@ -21,3 +42,4 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
