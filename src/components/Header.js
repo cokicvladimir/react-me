@@ -10,8 +10,7 @@ const  Header = () => {
 
             <ul className='nav-links'>
                 <li><NavLink to='/'>Home</NavLink></li>
-                <li><NavLink to='/forecast/current'>Current Forecast</NavLink></li>
-                <li><NavLink to='/forecast/seven-day'>7 day forecast</NavLink></li>
+                <li><NavLink to='/forecast'>Forecast</NavLink></li>
                 <li><NavLink to='/about'>About</NavLink></li>
             </ul>
         </div>

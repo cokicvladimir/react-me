@@ -1,47 +1,74 @@
-
 import React, {Component} from 'react';
 import weatherAPI from '../api/weather';
 import CurrentForecast from './CurrentForecast';
 import SevenDayForecast from './SevenDayForecast';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import "react-tabs/style/react-tabs.css";
 
 
 class Forecast extends Component{
     constructor(props){
         super(props);
         this.state = {
-            weather: {},
+            city: '',
+            forecast: {},
             errorMessage: ''
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleSubmit(e){
+        e.preventDefault();
+        const city = this.state.city;
+        this.fetchWeather(city);
+    }
+
+    handleChange(e) {
+        this.setState({city: e.target.value});
     }
 
     fetchWeather = (city) => {
         weatherAPI.get('/forecast.json?key=581187b3b0da45038b1130458192203&days=7&q=' + city )
             .then( response => {
-                return this.setState({weather: response.data});
+                this.setState({forecast: response.data});
             })
             .catch( error => {
                 if (error.response) {
-                    return this.setState({errorMessage: error.response.data.message});
+                    this.setState({errorMessage: error.response.data.message});
                 }
             });
     }
 
     render(){
-        const url = this.props.match.url; //provided Path from AppRouter (it can only be:'/forecast/current' or '/forecast/seven-day')
+
         return(
             <div className='forecast'>
-                {
-                    (url === '/forecast/current' &&
-                        <CurrentForecast fetchWeather={this.fetchWeather}
-                                         weather={this.state.weather}
-                                         error={this.state.errorMessage}
-                        />) ||
-                    (url === '/forecast/seven-day' &&
-                        <SevenDayForecast fetchWeather={this.fetchWeather}
-                                          weather={this.state.weather}
-                                          error={this.state.errorMessage}
-                        />)
-                }
+                <h3>
+                    Enter your city here:
+                    <form onSubmit={this.handleSubmit}>
+                        <input className='city-input' type='text' value={this.state.city} onChange={this.handleChange} /><br/>
+                        <button type="submit">Submit</button>
+                    </form>
+                </h3>
+
+                <br />
+                <br />
+
+                <Tabs>
+                    <TabList>
+                        <Tab>Current forecast</Tab>
+                        <Tab>7 day forecast</Tab>
+                    </TabList>
+
+                    <TabPanel>
+                        <CurrentForecast forecast={this.state.forecast} error={this.state.errorMessage}/>
+                    </TabPanel>
+                    <TabPanel>
+                        <SevenDayForecast forecast={this.state.forecast} error={this.state.errorMessage}/>
+                    </TabPanel>
+                </Tabs>
+
             </div>
         );
     }

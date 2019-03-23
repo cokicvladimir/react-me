@@ -15,7 +15,7 @@ class AppRouter extends Component{
                     <div className='row'>
                         <Switch>
                             <Route path='/' render={ ()=> <Home /> } exact={true}/>
-                            <Route path='/forecast/(current|seven-day)' render={ (props)=> <Forecast {...props}/> } />
+                            <Route path='/forecast' render={ (props)=> <Forecast {...props}/> }/>
                             <Route path='/about' render={ ()=> <About /> } />
                         </Switch>
                     </div>
